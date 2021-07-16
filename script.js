@@ -39,6 +39,7 @@ function populateFromLocal(localLibrary) {
 
 function addBookButtonSwitch() {
   bookForm.classList.toggle("hidden");
+  pageLibrary.classList.toggle("hidden");
   bookForm.classList.contains("hidden")
     ? (addButton.textContent = "Add Book")
     : (addButton.textContent = "Hide");
@@ -71,6 +72,9 @@ function addBook(i) {
   const card = document.createElement("div");
   card.classList.add("book-wrap");
   card.dataset.index = i;
+  card.addEventListener("transitionend", () => {
+    card.remove();
+  });
 
   const title = document.createElement("div");
   title.classList.add("book-title");
@@ -84,7 +88,7 @@ function addBook(i) {
 
   const pages = document.createElement("div");
   pages.classList.add("book-pages");
-  pages.textContent = `${myLibrary[i].pages}`;
+  pages.textContent = `${myLibrary[i].pages} pages`;
   card.appendChild(pages);
 
   const isRead = document.createElement("div");
@@ -93,13 +97,13 @@ function addBook(i) {
   card.appendChild(isRead);
 
   const isReadButton = document.createElement("button");
-  isReadButton.classList.add("isRead-button");
+  isReadButton.classList.add("isRead-button", "button");
   isReadButton.textContent = "Read?";
   isReadButton.addEventListener("click", myLibrary[i].isReadSwitch);
   card.appendChild(isReadButton);
 
   const removeButton = document.createElement("button");
-  removeButton.classList.add("remove-button");
+  removeButton.classList.add("remove-button", "button");
   removeButton.textContent = "Remove";
   removeButton.dataset.index = i;
   removeButton.addEventListener("click", removeBook);
@@ -110,12 +114,18 @@ function addBook(i) {
 
 function removeBook(e) {
   const index = e.target.dataset.index;
-  console.log(index);
   const book = document.querySelector(`div[data-index="${index}"]`);
-  myLibrary.splice(index, 1);
+  book.classList.add("removed");
+  book.addEventListener("transitionend", () => {
+    myLibrary.splice(index, 1);
+    saveLocal(myLibrary);
+    book.remove();
+    populate(myLibrary);
+  });
+  /*  myLibrary.splice(index, 1);
   saveLocal(myLibrary);
   book.remove();
-  populate(myLibrary);
+  populate(myLibrary); */
 }
 
 function saveLocal(myLibrary) {
@@ -129,7 +139,7 @@ newBook.addEventListener("click", () => {
 populate(myLibrary);
 
 function seed() {
-  for (const i = 0; i < 7; i++) {
+  for (let i = 0; i < 7; i++) {
     addBookToLibrary("The Hobbit", "J.R.R Tolkien", "295", false);
   }
 }

@@ -1,11 +1,31 @@
+@import url("https://fonts.googleapis.com/css2?family=Uchen&display=swap");
+
 * {
   box-sizing: border-box;
   margin: 0;
+  font-family: "Uchen", serif;
+}
+
+body {
+  background-color: #2fc8e8;
+}
+
+a,
+a:visited {
+  color: rgb(39, 38, 38);
+  text-decoration: none;
 }
 
 h1 {
   text-align: center;
   margin: 30px 0 30px;
+  color: #ffffff;
+  text-shadow: 1px 1px black;
+}
+
+h2 {
+  text-align: right;
+  margin-right: 10px;
 }
 
 .form-wrap {
@@ -22,6 +42,16 @@ h1 {
   margin: 15px auto;
 }
 
+.button {
+  background-color: rgb(255, 148, 49);
+  border: none;
+  border-radius: 10%;
+}
+
+.button:hover {
+  padding: 2px 4px;
+}
+
 .hidden {
   display: none;
 }
@@ -29,12 +59,37 @@ h1 {
 .mylibrary {
   display: flex;
   justify-content: space-evenly;
+  flex-direction: column;
   flex-wrap: wrap;
+  margin: 15px;
 }
 
 .book-wrap {
-  border: 1px solid black;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
   padding: 5px 10px;
-  background-color: green;
+  background-color: #bcdde4;
   margin-top: 10px;
+  display: flex;
+  justify-content: space-around;
+  transition: transform 750ms 0s;
+}
+
+@media (max-device-width: 475px) {
+  .mylibrary {
+    display: grid;
+    grid-template: repeat(1, 1fr);
+  }
+
+  .book-wrap {
+    width: 100%;
+  }
+}
+
+.removed {
+  transform: translateX(100vw);
+}
+
+body {
+  overflow-x: hidden;
 }
